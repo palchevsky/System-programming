@@ -1,0 +1,6 @@
+E:\Projects\SystemProgramming\Projects\DZ1\Processes\Processes\bin\Debug\Processes.exe.config
+E:\Projects\SystemProgramming\Projects\DZ1\Processes\Processes\bin\Debug\Processes.exe
+E:\Projects\SystemProgramming\Projects\DZ1\Processes\Processes\bin\Debug\Processes.pdb
+E:\Projects\SystemProgramming\Projects\DZ1\Processes\Processes\obj\Debug\Processes.csprojResolveAssemblyReference.cache
+E:\Projects\SystemProgramming\Projects\DZ1\Processes\Processes\obj\Debug\Processes.exe
+E:\Projects\SystemProgramming\Projects\DZ1\Processes\Processes\obj\Debug\Processes.pdb
