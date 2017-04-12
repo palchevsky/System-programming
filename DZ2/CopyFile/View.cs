@@ -8,14 +8,17 @@ namespace CopyFile
 {
     public class View : Base
     {
-        private bool isIndetermitated;
+        private bool _isIndetermitated;
 
         public bool IsIndetermitated
         {
-            get { return isIndetermitated; }
+            get
+            {
+                return _isIndetermitated;
+            }
             set
             {
-                isIndetermitated = value;
+                _isIndetermitated = value;
                 OnPropertyChanged("IsIndetermitated");
             }
         }
@@ -50,15 +53,15 @@ namespace CopyFile
             }
         }
 
-        private RelayCommand openFileCommand;
+        private RelayCommand _openFileCommand;
 
         public RelayCommand OpenFileCommand
         {
             get
             {
-                if (openFileCommand == null)
-                    openFileCommand = new RelayCommand(ExecuteOpenFileCommand);
-                return openFileCommand;
+                if (_openFileCommand == null)
+                    _openFileCommand = new RelayCommand(ExecuteOpenFileCommand);
+                return _openFileCommand;
             }
         }
 
@@ -73,15 +76,15 @@ namespace CopyFile
         }
 
 
-        private RelayCommand saveFileCommand;
+        private RelayCommand _saveFileCommand;
 
         public RelayCommand SaveFileCommand
         {
             get
             {
-                if (saveFileCommand == null)
-                    saveFileCommand = new RelayCommand(ExecuteSaveFileCommand);
-                return saveFileCommand;
+                if (_saveFileCommand == null)
+                    _saveFileCommand = new RelayCommand(ExecuteSaveFileCommand);
+                return _saveFileCommand;
             }
         }
 
@@ -95,15 +98,15 @@ namespace CopyFile
             }
         }
 
-        private RelayCommand threadStartCopyCommand;
+        private RelayCommand _threadStartCopyCommand;
 
         public RelayCommand ThreadStartCopyCommand
         {
             get
             {
-                if (threadStartCopyCommand == null)
-                    threadStartCopyCommand = new RelayCommand(ExecuteThreadStartCopyCommand);
-                return threadStartCopyCommand;
+                if (_threadStartCopyCommand == null)
+                    _threadStartCopyCommand = new RelayCommand(ExecuteThreadStartCopyCommand);
+                return _threadStartCopyCommand;
             }
         }
 
@@ -113,15 +116,15 @@ namespace CopyFile
             thread.Start();
         }
 
-        private RelayCommand threadPoolStartCopyCommand;
+        private RelayCommand _threadPoolStartCopyCommand;
 
         public RelayCommand ThreadPoolStartCopyCommand
         {
             get
             {
-                if (threadPoolStartCopyCommand == null)
-                    threadPoolStartCopyCommand = new RelayCommand(ExecuteThreadPoolStartCopyCommand);
-                return threadPoolStartCopyCommand;
+                if (_threadPoolStartCopyCommand == null)
+                    _threadPoolStartCopyCommand = new RelayCommand(ExecuteThreadPoolStartCopyCommand);
+                return _threadPoolStartCopyCommand;
             }
         }
 
