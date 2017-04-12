@@ -20,13 +20,13 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox x:Name="tbFileFrom" Grid.Column="1" Grid.Row="0" Text="{Binding Path=OpenFile.FileName, Mode=TwoWay}" ></TextBox>
-        <TextBox x:Name="tbFileTo" Grid.Column="1" Grid.Row="1" Text="{Binding Path=SaveFile.FileName, Mode=TwoWay}"></TextBox>
+        <TextBox x:Name="tbFileFrom" Grid.Column="1" Grid.Row="0" Text="{Binding Path=FileCopyFrom, Mode=TwoWay}" ></TextBox>
+        <TextBox x:Name="tbFileTo" Grid.Column="1" Grid.Row="1" Text="{Binding Path=FileCopyTo, Mode=TwoWay}"></TextBox>
         <Label Grid.Column="0" Grid.Row="0">Copy from:</Label>
         <Label Grid.Column="0" Grid.Row="1">Copy to:</Label>
         <Button  x:Name="btBrowse" Grid.Column="2" Grid.Row="0" Command="{Binding Path=OpenFileCommand}">Browse...</Button>
         <Button x:Name="btSaveAs" Grid.Column="2" Grid.Row="1" Command="{Binding Path=SaveFileCommand}">Save as...</Button>
         <Button x:Name="btStart" Grid.Column="2" Grid.Row="2" Command="{Binding Path=StartCopy}">Start</Button>
-        <ProgressBar x:Name="pbCopying" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"></ProgressBar>
+        <ProgressBar IsIndeterminate="{Binding IsIndetermined}" x:Name="pbCopying" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"></ProgressBar>
     </Grid>
 </Window>

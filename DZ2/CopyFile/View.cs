@@ -7,35 +7,39 @@ namespace CopyFile
 {
     public class View:Base
     {
-        private Files openFile;
+        private bool isIndetermined;
 
-        public Files OpenFile
+        public bool IsIndetermined
         {
-            get
-            {
-                if (openFile == null) openFile = new Files();
-                return openFile;
+            get {
+                return isIndetermined;
             }
-            set
-            {
-                openFile = value;
-                OnPropertyChanged("OpenFile");
+            set {
+                isIndetermined = value;
+                OnPropertyChanged("IsIndetermined");
             }
         }
 
-        private Files saveFile;
+        private string _fileCopyFrom;
 
-        public Files SaveFile
+        public string FileCopyFrom
         {
-            get
-            {
-                if (saveFile == null) saveFile = new Files();
-                return saveFile;
+            get { return _fileCopyFrom; }
+            set {
+                _fileCopyFrom = value;
+                OnPropertyChanged("FileCopyFrom");
             }
+        }
+
+        private string _fileCopyTo;
+
+        public string FileCopyTo
+        {
+            get { return _fileCopyTo; }
             set
             {
-                saveFile = value;
-                OnPropertyChanged("SaveFile");
+                _fileCopyTo = value;
+                OnPropertyChanged("FileCopyTo");
             }
         }
 
@@ -57,7 +61,7 @@ namespace CopyFile
 
             if (openFileDialog.ShowDialog() == true)
             {
-                OpenFile.FileName = openFileDialog.FileName;
+                FileCopyFrom = openFileDialog.FileName;
             }
         }
 
@@ -80,7 +84,7 @@ namespace CopyFile
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                SaveFile.FileName = saveFileDialog.FileName;
+                FileCopyTo = saveFileDialog.FileName;
             }
         }
 
@@ -98,24 +102,34 @@ namespace CopyFile
 
         private async void ExecuteStartCopyCommand(object param)
         {
-            CancellationToken cancellationToken;
-            var fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
-            var bufferSize = 4096;
-
-            using (var sourceStream =
-                new FileStream(OpenFile.FileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOptions)
-            )
+            try
             {
-                using (var destinationStream =
-                    new FileStream(SaveFile.FileName, FileMode.CreateNew, FileAccess.Write, FileShare.None, bufferSize,
-                        fileOptions)
-                )
+                IsIndetermined = true;
+
+                CancellationToken cancellationToken;
+                var fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
+                var bufferSize = 4096;
+
+                using (var sourceStream =
+                    new FileStream(FileCopyFrom, FileMode.Open, FileAccess.Read, FileShare.Read,
+                    bufferSize, fileOptions))
                 {
-                    await sourceStream.CopyToAsync(destinationStream, bufferSize, cancellationToken)
-                        .ConfigureAwait(continueOnCapturedContext: false);
+                    using (var destinationStream =
+                        new FileStream(FileCopyTo, FileMode.CreateNew, FileAccess.Write, FileShare.None,
+                        bufferSize, fileOptions))
+                    {
+                        await sourceStream.CopyToAsync(destinationStream, bufferSize, cancellationToken)
+                            .ConfigureAwait(continueOnCapturedContext: false);
+                    }
                 }
+                IsIndetermined = false;
+                MessageBox.Show("Succesfully completed!", "Copy");
             }
-            MessageBox.Show("Copyed");
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            
         }
     }
 }
