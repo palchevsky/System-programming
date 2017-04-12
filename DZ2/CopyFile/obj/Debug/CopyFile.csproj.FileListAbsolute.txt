@@ -26,3 +26,4 @@ E:\Projects\SystemProgramming\Git\System-programming\DZ2\CopyFile\obj\Debug\Copy
 E:\Projects\SystemProgramming\Git\System-programming\DZ2\CopyFile\obj\Debug\CopyFile.exe
 E:\Projects\SystemProgramming\Git\System-programming\DZ2\CopyFile\obj\Debug\CopyFile.pdb
 E:\Projects\SystemProgramming\Git\System-programming\DZ2\CopyFile\obj\Debug\GeneratedInternalTypeHelper.g.cs
+e:\Projects\SystemProgramming\Git\System-programming\DZ2\CopyFile\obj\Debug\CopyFile.csprojResolveAssemblyReference.cache

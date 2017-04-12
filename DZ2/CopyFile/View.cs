@@ -1,40 +1,51 @@
-﻿using Microsoft.Win32;
+﻿using System;
+using Microsoft.Win32;
 using System.IO;
 using System.Threading;
 using System.Windows;
 
 namespace CopyFile
 {
-    public class View:Base
+    public class View : Base
     {
-        private Files openFile;
+        private bool isIndetermitated;
 
-        public Files OpenFile
+        public bool IsIndetermitated
+        {
+            get { return isIndetermitated; }
+            set
+            {
+                isIndetermitated = value;
+                OnPropertyChanged("IsIndetermitated");
+            }
+        }
+
+        private string _openFile;
+
+        public string OpenFile
         {
             get
             {
-                if (openFile == null) openFile = new Files();
-                return openFile;
+                return _openFile;
             }
             set
             {
-                openFile = value;
+                _openFile = value;
                 OnPropertyChanged("OpenFile");
             }
         }
 
-        private Files saveFile;
+        private string _saveFile;
 
-        public Files SaveFile
+        public string SaveFile
         {
             get
             {
-                if (saveFile == null) saveFile = new Files();
-                return saveFile;
+                return _saveFile;
             }
             set
             {
-                saveFile = value;
+                _saveFile = value;
                 OnPropertyChanged("SaveFile");
             }
         }
@@ -57,7 +68,7 @@ namespace CopyFile
 
             if (openFileDialog.ShowDialog() == true)
             {
-                OpenFile.FileName = openFileDialog.FileName;
+                OpenFile = openFileDialog.FileName;
             }
         }
 
@@ -80,42 +91,70 @@ namespace CopyFile
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                SaveFile.FileName = saveFileDialog.FileName;
+                SaveFile = saveFileDialog.FileName;
             }
         }
 
-        private RelayCommand startCopyCommand;
+        private RelayCommand threadStartCopyCommand;
 
-        public RelayCommand StartCopy
+        public RelayCommand ThreadStartCopyCommand
         {
             get
             {
-                if (startCopyCommand == null)
-                    startCopyCommand = new RelayCommand(ExecuteStartCopyCommand);
-                return startCopyCommand;
+                if (threadStartCopyCommand == null)
+                    threadStartCopyCommand = new RelayCommand(ExecuteThreadStartCopyCommand);
+                return threadStartCopyCommand;
             }
         }
 
-        private async void ExecuteStartCopyCommand(object param)
+        private void ExecuteThreadStartCopyCommand(object param)
         {
-            CancellationToken cancellationToken;
-            var fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
-            var bufferSize = 4096;
+            Thread thread = new Thread(Copy);
+            thread.Start();
+        }
 
-            using (var sourceStream =
-                new FileStream(OpenFile.FileName, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOptions)
-            )
+        private RelayCommand threadPoolStartCopyCommand;
+
+        public RelayCommand ThreadPoolStartCopyCommand
+        {
+            get
             {
-                using (var destinationStream =
-                    new FileStream(SaveFile.FileName, FileMode.CreateNew, FileAccess.Write, FileShare.None, bufferSize,
-                        fileOptions)
+                if (threadPoolStartCopyCommand == null)
+                    threadPoolStartCopyCommand = new RelayCommand(ExecuteThreadPoolStartCopyCommand);
+                return threadPoolStartCopyCommand;
+            }
+        }
+
+        private void ExecuteThreadPoolStartCopyCommand(object param)
+        {
+            ThreadPool.QueueUserWorkItem(Copy);
+        }
+
+        private void Copy(object state)
+        {
+            try
+            {
+                IsIndetermitated = true;
+
+                var bufferSize = 4096;
+                using (var sourceStream =
+                    new FileStream(OpenFile, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize)
                 )
                 {
-                    await sourceStream.CopyToAsync(destinationStream, bufferSize, cancellationToken)
-                        .ConfigureAwait(continueOnCapturedContext: false);
+                    using (var destinationStream =
+                        new FileStream(SaveFile, FileMode.CreateNew, FileAccess.Write, FileShare.None, bufferSize)
+                    )
+                    {
+                        sourceStream.CopyTo(destinationStream, bufferSize);
+                    }
                 }
+                IsIndetermitated = false;
+                MessageBox.Show("Copied successfully!", "Copied!");
             }
-            MessageBox.Show("Copyed");
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
     }
 }
