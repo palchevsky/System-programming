@@ -39,7 +39,7 @@
             this.btBackgroundColor = new System.Windows.Forms.Button();
             this.tbFont = new System.Windows.Forms.TextBox();
             this.numUpDown = new System.Windows.Forms.NumericUpDown();
-            this.rbSaveToText = new System.Windows.Forms.RadioButton();
+            this.rbSaveToXML = new System.Windows.Forms.RadioButton();
             this.rbSaveToRegistry = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDown)).BeginInit();
@@ -136,16 +136,16 @@
             0,
             0});
             // 
-            // rbSaveToText
+            // rbSaveToXML
             // 
-            this.rbSaveToText.AutoSize = true;
-            this.rbSaveToText.Location = new System.Drawing.Point(6, 19);
-            this.rbSaveToText.Name = "rbSaveToText";
-            this.rbSaveToText.Size = new System.Drawing.Size(47, 17);
-            this.rbSaveToText.TabIndex = 8;
-            this.rbSaveToText.TabStop = true;
-            this.rbSaveToText.Text = "XML";
-            this.rbSaveToText.UseVisualStyleBackColor = true;
+            this.rbSaveToXML.AutoSize = true;
+            this.rbSaveToXML.Location = new System.Drawing.Point(6, 19);
+            this.rbSaveToXML.Name = "rbSaveToXML";
+            this.rbSaveToXML.Size = new System.Drawing.Size(47, 17);
+            this.rbSaveToXML.TabIndex = 8;
+            this.rbSaveToXML.TabStop = true;
+            this.rbSaveToXML.Text = "XML";
+            this.rbSaveToXML.UseVisualStyleBackColor = true;
             // 
             // rbSaveToRegistry
             // 
@@ -161,7 +161,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.rbSaveToText);
+            this.groupBox1.Controls.Add(this.rbSaveToXML);
             this.groupBox1.Controls.Add(this.rbSaveToRegistry);
             this.groupBox1.Location = new System.Drawing.Point(438, 190);
             this.groupBox1.Name = "groupBox1";
@@ -210,7 +210,7 @@
         private System.Windows.Forms.Button btBackgroundColor;
         private System.Windows.Forms.TextBox tbFont;
         private System.Windows.Forms.NumericUpDown numUpDown;
-        private System.Windows.Forms.RadioButton rbSaveToText;
+        private System.Windows.Forms.RadioButton rbSaveToXML;
         private System.Windows.Forms.RadioButton rbSaveToRegistry;
         private System.Windows.Forms.GroupBox groupBox1;
     }

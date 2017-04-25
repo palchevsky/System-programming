@@ -1,80 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿using System.Linq;
 using System.Xml.Linq;
 
 namespace LibraryToFile
 {
-    public class LibForXML : Param
+    public class LibForXML
     {
-        //    private void DoReadWrite(string filename, Curve from, out Curve to)
-        //    {
-        //        XmlSerializer xs = new XmlSerializer(typeof(Curve));
+        private string _fontFamily;
+        public string FontFamily
+        {
+            get
+            {
+                return _fontFamily;
+            }
+            set { _fontFamily = value; }
+        }
 
-        //        // Запись
-        //        Stream writer = new FileStream(filename, FileMode.Create);
-        //        xs.Serialize(writer, from);
-        //        writer.Close();
+        private string _foreColor;
 
-        //        // Чтение        
-        //        Stream reader = new FileStream(filename, FileMode.Open);
-        //        to = (Curve)xs.Deserialize(reader);
-        //        reader.Close();
-        //    }
+        public string ForeColor
+        {
+            get
+            {
+                return _foreColor;
+            }
+            set { _foreColor = value; }
+        }
+
+        private string _backgroundColor;
+        public string BackgroundColor
+        {
+            get
+            {
+                return _backgroundColor;
+            }
+            set { _backgroundColor = value; }
+        }
+
+        private double _fontSize;
+        public double FontSize
+        {
+            get
+            {
+                return _fontSize;
+            }
+            set { _fontSize = value; }
+        }
 
         public void Load()
         {
-            //var doc = new XmlDocument();
-            //doc.LoadXml(@"settings.xml");
-            //var @params= doc["Params"];
-            //foreach (var item in @params)
-            //{
-            //    Console.WriteLine(item);
-            //    //FontFamily = item("FontFamily").Value;
-            //    //ForeColor = item("ForeColor").Value;
-            //    //BackgroundColor = item("BackgroundColor").Value;
-            //    //FontSize = Convert.ToDouble(item["FontSize"].Value);
-            //}
-
-            //FontFamily = doc["FontFamily"].Value;
-            //ForeColor = doc["ForeColor"].Value;
-            //BackgroundColor = doc["BackgroundColor"].Value;
-            //FontSize = Convert.ToDouble(doc["FontSize"].Value);
-
-
-            //var tasks = doc["Tasks"];
-            //Param test = new Param();
-
             XDocument doc = XDocument.Load(@"settings.xml");
-            //XElement xml = XElement.Load(@"settings.xml");
-            //FontFamily = xml.Element("FontFamily").Value;
-            //ForeColor = xml.Element("ForeColor").Value;
-            //BackgroundColor = xml.Element("BackgroundColor").Value;
-            //FontSize = Convert.ToDouble(xml.Element("FontSize").Value);
-
-            //IEnumerable<XElement> @params =
-            //from el in xml.Elements("Params")
-            //select el;
-            //foreach (XElement el in @params)
-            //{
-            //    el.Element()
-            //    Console.WriteLine(el);
-            //}
-
-            var query = from xElem in doc.Descendants("Params")
-                        select new Param
-                        {
-                            FontFamily = (string)xElem.Element("FontFamily"),
-                            ForeColor = (string)xElem.Element("ForeColor"),
-                            BackgroundColor = (string)xElem.Element("BackgroundColor"),
-                            FontSize = (double?)xElem.Element("FontSize") ?? 20.0
-                        };
-            //FontFamily=query[0]
-            //this.Clear();
-            //AddRange(query);
+            _fontFamily = (string)doc.Descendants("FontFamily").First();
+            _foreColor = (string)doc.Descendants("ForeColor").First();
+            _backgroundColor = (string)doc.Descendants("BackgroundColor").First();
+            _fontSize = (double?)doc.Descendants("FontSize").First() ?? 20.0;
         }
 
         public void Save()

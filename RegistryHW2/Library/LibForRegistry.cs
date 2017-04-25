@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System;
 
 namespace Library
 {
@@ -80,7 +76,7 @@ namespace Library
 
         public static void LoadFromRegistry()
         {
-            RegistryKey hklm = Microsoft.Win32.Registry.CurrentUser;//.LocalMachine;
+            RegistryKey hklm = Microsoft.Win32.Registry.CurrentUser;
             RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
             var itStep = hkSoftware.CreateSubKey("ITStep");
             if (itStep.GetValue("FontFamily") != null)
