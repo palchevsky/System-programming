@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Library;
 using Microsoft.Win32;
+using LibraryToFile;
 /*
- * 1. Вынести логику сохранения в реестре в отдельную сборку
- * 2. Создать сборку с сохранением в файлы
- * 3. Динамически загрузить способ сохранения
- */ 
+* 1. Вынести логику сохранения в реестре в отдельную сборку
+* 2. Создать сборку с сохранением в файлы
+* 3. Динамически загрузить способ сохранения
+*/
 
 
 
@@ -34,11 +35,19 @@ namespace RegistryHW
 
         private void RegTestForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Lib.FontFamily = tbFont.Text;
-            Lib.FontSize = Convert.ToDouble(numUpDown.Value);
-            Lib.ForeColor = _foreColor.Name;
-            Lib.BackgroundColor = _backgroundColor.Name;
-            Lib.SaveToRegistry();
+            LibForXML xml = new LibForXML();
+            xml.FontFamily = tbFont.Text;
+            xml.FontSize = Convert.ToDouble(numUpDown.Value);
+            xml.ForeColor = _foreColor.Name;
+            xml.BackgroundColor = _backgroundColor.Name;
+            xml.Save();
+
+
+            //LibForRegistry.FontFamily = tbFont.Text;
+            //LibForRegistry.FontSize = Convert.ToDouble(numUpDown.Value);
+            //LibForRegistry.ForeColor = _foreColor.Name;
+            //LibForRegistry.BackgroundColor = _backgroundColor.Name;
+            //LibForRegistry.SaveToRegistry();
             //RegistryKey hklm = Microsoft.Win32.Registry.LocalMachine;
             //RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
             ////RegistryKey itStep = hkSoftware.OpenSubKey("itStep");
@@ -78,16 +87,23 @@ namespace RegistryHW
 
         private void RegTestForm_Load(object sender, EventArgs e)
         {
-            Lib.LoadFromRegistry();
-            lbHelloWord.Font = new Font(Lib.FontFamily, (float)Lib.FontSize);
-            lbHelloWord.BackColor = Color.FromName(Lib.BackgroundColor);
-            lbHelloWord.ForeColor = Color.FromName(Lib.ForeColor);
-            tbFont.Text = Lib.FontFamily;
-            numUpDown.Value = Convert.ToDecimal(Lib.FontSize);
-            
-            
-            
-            
+            LibForXML file = new LibForXML();
+            file.Load();
+            lbHelloWord.Font = new Font(file.FontFamily, (float)file.FontSize);
+            lbHelloWord.BackColor = Color.FromName(file.BackgroundColor);
+            lbHelloWord.ForeColor = Color.FromName(file.ForeColor);
+            tbFont.Text = file.FontFamily;
+            numUpDown.Value = Convert.ToDecimal(file.FontSize);
+
+
+            ////////////////////////////////
+            //LibForRegistry.LoadFromRegistry();
+            //lbHelloWord.Font = new Font(LibForRegistry.FontFamily, (float)LibForRegistry.FontSize);
+            //lbHelloWord.BackColor = Color.FromName(LibForRegistry.BackgroundColor);
+            //lbHelloWord.ForeColor = Color.FromName(LibForRegistry.ForeColor);
+            //tbFont.Text = LibForRegistry.FontFamily;
+            //numUpDown.Value = Convert.ToDecimal(LibForRegistry.FontSize);
+
             //_foreColor = lbHelloWord.ForeColor;
             //_backgroundColor = lbHelloWord.BackColor;
             //RegistryKey hklm = Microsoft.Win32.Registry.LocalMachine;

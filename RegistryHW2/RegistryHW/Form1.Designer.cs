@@ -39,8 +39,11 @@
             this.btBackgroundColor = new System.Windows.Forms.Button();
             this.tbFont = new System.Windows.Forms.TextBox();
             this.numUpDown = new System.Windows.Forms.NumericUpDown();
-            this.btTest = new System.Windows.Forms.Button();
+            this.rbSaveToText = new System.Windows.Forms.RadioButton();
+            this.rbSaveToRegistry = new System.Windows.Forms.RadioButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDown)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbHelloWord
@@ -133,22 +136,46 @@
             0,
             0});
             // 
-            // btTest
+            // rbSaveToText
             // 
-            this.btTest.Location = new System.Drawing.Point(446, 200);
-            this.btTest.Name = "btTest";
-            this.btTest.Size = new System.Drawing.Size(75, 23);
-            this.btTest.TabIndex = 8;
-            this.btTest.Text = "Test";
-            this.btTest.UseVisualStyleBackColor = true;
-            this.btTest.Click += new System.EventHandler(this.btTest_Click);
+            this.rbSaveToText.AutoSize = true;
+            this.rbSaveToText.Location = new System.Drawing.Point(6, 19);
+            this.rbSaveToText.Name = "rbSaveToText";
+            this.rbSaveToText.Size = new System.Drawing.Size(47, 17);
+            this.rbSaveToText.TabIndex = 8;
+            this.rbSaveToText.TabStop = true;
+            this.rbSaveToText.Text = "XML";
+            this.rbSaveToText.UseVisualStyleBackColor = true;
+            // 
+            // rbSaveToRegistry
+            // 
+            this.rbSaveToRegistry.AutoSize = true;
+            this.rbSaveToRegistry.Checked = true;
+            this.rbSaveToRegistry.Location = new System.Drawing.Point(6, 42);
+            this.rbSaveToRegistry.Name = "rbSaveToRegistry";
+            this.rbSaveToRegistry.Size = new System.Drawing.Size(63, 17);
+            this.rbSaveToRegistry.TabIndex = 8;
+            this.rbSaveToRegistry.TabStop = true;
+            this.rbSaveToRegistry.Text = "Registry";
+            this.rbSaveToRegistry.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rbSaveToText);
+            this.groupBox1.Controls.Add(this.rbSaveToRegistry);
+            this.groupBox1.Location = new System.Drawing.Point(438, 190);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(111, 64);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Save to/Load from";
             // 
             // RegTestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(561, 261);
-            this.Controls.Add(this.btTest);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.numUpDown);
             this.Controls.Add(this.tbFont);
             this.Controls.Add(this.btBackgroundColor);
@@ -163,6 +190,8 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RegTestForm_FormClosed);
             this.Load += new System.EventHandler(this.RegTestForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numUpDown)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,7 +210,9 @@
         private System.Windows.Forms.Button btBackgroundColor;
         private System.Windows.Forms.TextBox tbFont;
         private System.Windows.Forms.NumericUpDown numUpDown;
-        private System.Windows.Forms.Button btTest;
+        private System.Windows.Forms.RadioButton rbSaveToText;
+        private System.Windows.Forms.RadioButton rbSaveToRegistry;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 

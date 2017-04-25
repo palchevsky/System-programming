@@ -7,7 +7,7 @@ using Microsoft.Win32;
 
 namespace Library
 {
-    public static class Lib
+    public static class LibForRegistry
     {
         private static string _fontFamily;
         public static string FontFamily
@@ -66,7 +66,7 @@ namespace Library
         {
             get
             {
-                if (_fontSize <= 0 && _fontSize >= 100)
+                if (_fontSize <= 0 || _fontSize >= 100)
                 {
                     return 15;
                 }

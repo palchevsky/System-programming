@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistryHW", "RegistryHW\RegistryHW.csproj", "{63D82F45-DB6D-4530-B8B4-650D7CFF5BE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{2DEA52C7-F422-4CFA-86F1-CF9FFB423C8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryToRegistry", "Library\LibraryToRegistry.csproj", "{2DEA52C7-F422-4CFA-86F1-CF9FFB423C8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryToFile", "LibraryToFile\LibraryToFile.csproj", "{9E8B0817-B6DD-41CB-B4F5-C8CBD22A2808}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryToXML", "LibraryToFile\LibraryToXML.csproj", "{9E8B0817-B6DD-41CB-B4F5-C8CBD22A2808}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

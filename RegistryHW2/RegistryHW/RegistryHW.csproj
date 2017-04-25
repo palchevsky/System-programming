@@ -80,13 +80,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LibraryToFile\LibraryToFile.csproj">
+    <ProjectReference Include="..\LibraryToFile\LibraryToXML.csproj">
       <Project>{9e8b0817-b6dd-41cb-b4f5-c8cbd22a2808}</Project>
-      <Name>LibraryToFile</Name>
+      <Name>LibraryToXML</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Library\Library.csproj">
+    <ProjectReference Include="..\Library\LibraryToRegistry.csproj">
       <Project>{2dea52c7-f422-4cfa-86f1-cf9ffb423c8c}</Project>
-      <Name>Library</Name>
+      <Name>LibraryToRegistry</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
