@@ -5,63 +5,22 @@ namespace LibraryToFile
 {
     public class LibForXML
     {
-        private string _fontFamily;
-        public string FontFamily
-        {
-            get
-            {
-                return _fontFamily;
-            }
-            set { _fontFamily = value; }
-        }
-
-        private string _foreColor;
-
-        public string ForeColor
-        {
-            get
-            {
-                return _foreColor;
-            }
-            set { _foreColor = value; }
-        }
-
-        private string _backgroundColor;
-        public string BackgroundColor
-        {
-            get
-            {
-                return _backgroundColor;
-            }
-            set { _backgroundColor = value; }
-        }
-
-        private double _fontSize;
-        public double FontSize
-        {
-            get
-            {
-                return _fontSize;
-            }
-            set { _fontSize = value; }
-        }
-
-        public void Load()
+        public void Load(ref string fontFamily, ref string foreColor, ref string backgroundColor, ref double fontSize)
         {
             XDocument doc = XDocument.Load(@"settings.xml");
-            _fontFamily = (string)doc.Descendants("FontFamily").First();
-            _foreColor = (string)doc.Descendants("ForeColor").First();
-            _backgroundColor = (string)doc.Descendants("BackgroundColor").First();
-            _fontSize = (double?)doc.Descendants("FontSize").First() ?? 20.0;
+            fontFamily = (string)doc.Descendants("FontFamily").First();
+            foreColor = (string)doc.Descendants("ForeColor").First();
+            backgroundColor = (string)doc.Descendants("BackgroundColor").First();
+            fontSize = (double?)doc.Descendants("FontSize").First() ?? 20.0;
         }
 
-        public void Save()
+        public void Save(string fontFamily, string foreColor, string backgroundColor, double fontSize)
         {
             XElement xml = new XElement("Params",
-                new XElement("FontFamily", FontFamily),
-                new XElement("ForeColor", ForeColor),
-                new XElement("BackgroundColor", BackgroundColor),
-                new XElement("FontSize", FontSize));
+                new XElement("FontFamily", fontFamily),
+                new XElement("ForeColor", foreColor),
+                new XElement("BackgroundColor", backgroundColor),
+                new XElement("FontSize", fontSize));
             xml.Save(@"settings.xml");
         }
     }

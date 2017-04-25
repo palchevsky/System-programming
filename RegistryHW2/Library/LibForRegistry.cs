@@ -3,109 +3,44 @@ using System;
 
 namespace Library
 {
-    public static class LibForRegistry
+    public class LibForRegistry
     {
-        private static string _fontFamily;
-        public static string FontFamily
+        public void Load(ref string fontFamily, ref string foreColor, ref string backgroundColor, ref double fontSize)
         {
-            get
-            {
-                if (_fontFamily == null)
-                {
-                    return "Arial";
-                }
-                else
-                {
-                    return _fontFamily;
-                }
-            }
-            set { _fontFamily = value; }
-        }
-
-        private static string _foreColor;
-
-        public static string ForeColor
-        {
-            get
-            {
-                if (_foreColor == null)
-                {
-                    return "Black";
-                }
-                else
-                {
-                    return _foreColor;
-                }
-            }
-            set { _foreColor = value; }
-        }
-
-        private static string _backgroundColor;
-        public static string BackgroundColor
-        {
-            get
-            {
-                if (_backgroundColor == null)
-                {
-                    return "White";
-                }
-                else
-                {
-                    return _backgroundColor;
-                }
-            }
-            set { _backgroundColor = value; }
-        }
-
-        private static double _fontSize;
-        public static double FontSize
-        {
-            get
-            {
-                if (_fontSize <= 0 || _fontSize >= 100)
-                {
-                    return 15;
-                }
-                else
-                {
-                    return _fontSize;
-                }
-            }
-            set { _fontSize = value; }
-        }
-
-        public static void LoadFromRegistry()
-        {
+            fontFamily = "Arial";
+            foreColor = "Navy";
+            backgroundColor = "Black";
+            fontSize = 15;
             RegistryKey hklm = Microsoft.Win32.Registry.CurrentUser;
             RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
             var itStep = hkSoftware.CreateSubKey("ITStep");
             if (itStep.GetValue("FontFamily") != null)
             {
-                _fontFamily = itStep.GetValue("FontFamily").ToString();
+                fontFamily = itStep.GetValue("FontFamily").ToString();
             }
             if (itStep.GetValue("FontSize") != null)
             {
-                _fontSize = Convert.ToDouble(itStep.GetValue("FontSize"));
+                fontSize = Convert.ToDouble(itStep.GetValue("FontSize"));
             }
             if (itStep.GetValue("ForeColor") != null)
             {
-                _foreColor = itStep.GetValue("ForeColor").ToString();
+                foreColor = itStep.GetValue("ForeColor").ToString();
             }
             if (itStep.GetValue("BackgroundColor") != null)
             {
-                _backgroundColor = itStep.GetValue("BackgroundColor").ToString();
+                backgroundColor = itStep.GetValue("BackgroundColor").ToString();
             }
         }
 
-        public static void SaveToRegistry()
+        public void Save(string fontFamily, string foreColor, string backgroundColor, double fontSize)
         {
             RegistryKey hklm = Microsoft.Win32.Registry.CurrentUser;//LocalMachine;
             RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
             var itStep = hkSoftware.CreateSubKey("ITStep");
-            itStep.SetValue("FontFamily", _fontFamily);
-            itStep.SetValue("FontSize", _fontSize);
-            itStep.SetValue("ForeColor", _foreColor);
-            itStep.SetValue("BackgroundColor", _backgroundColor);
+            itStep.SetValue("FontFamily", fontFamily);
+            itStep.SetValue("FontSize", fontSize);
+            itStep.SetValue("ForeColor", foreColor);
+            itStep.SetValue("BackgroundColor", backgroundColor);
         }
     }
 }

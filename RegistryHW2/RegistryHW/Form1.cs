@@ -1,9 +1,12 @@
-﻿using Library;
-using LibraryToFile;
+﻿//using Library;
+//using LibraryToFile;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Reflection;
+using System.IO;
+
 /*
 * 1. Вынести логику сохранения в реестре в отдельную сборку
 * 2. Создать сборку с сохранением в файлы
@@ -16,40 +19,134 @@ namespace RegistryHW
     {
         private Color _foreColor;
         private Color _backgroundColor;
+        private string _foreColorStr;
+        private string _backgroundColorStr;
+        private double _fontSize;
+        private string _fontFamily;
+
         public RegTestForm()
         {
             InitializeComponent();
         }
 
-        private void RegTestForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void RegTestForm_Load(object sender, EventArgs e)
         {
-            if (rbSaveToXML.Checked==true)
+            if (IsInRegistry())
             {
-                RegistryKey hklm = Microsoft.Win32.Registry.CurrentUser;
-                RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
-                var itStep = hkSoftware.CreateSubKey("ITStep");
-                if (itStep.GetValue("IsRegistry")!=null)
+                try
                 {
-                    itStep.DeleteValue("IsRegistry");
+                    //Загрузка из реестра
+                    LoadViaLib("Library.dll", "Library.LibForRegistry");
                 }
-                LibForXML xml = new LibForXML();
-                xml.FontFamily = tbFont.Text;
-                xml.FontSize = Convert.ToDouble(numUpDown.Value);
-                xml.ForeColor = _foreColor.Name;
-                xml.BackgroundColor = _backgroundColor.Name;
-                xml.Save();
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                SetParameters();
+                rbSaveToRegistry.Checked = true;
             }
             else
             {
-                RegistryKey hklm = Microsoft.Win32.Registry.CurrentUser;
+                try
+                {
+                    //Загрузка из файла XML
+                    LoadViaLib("LibraryToFile.dll", "LibraryToFile.LibForXML");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                SetParameters();
+                rbSaveToXML.Checked = true;
+            }
+        }
+
+        private void LoadViaLib(string assemblyName, string typeName)
+        {
+            try
+            {
+                Assembly asm = Assembly.LoadFrom(assemblyName);
+                Type lib = asm.GetType(typeName, true, true);
+                object instObj = Activator.CreateInstance(lib);
+                MethodInfo Load = instObj.GetType().GetMethod("Load");
+                object[] outParameters = new object[] { _fontFamily, _foreColorStr,
+                     _backgroundColorStr, _fontSize};
+                object result = Load.Invoke(instObj, outParameters);
+                _fontFamily = (string)outParameters[0];
+                _foreColorStr = (string)outParameters[1];
+                _backgroundColorStr = (string)outParameters[2];
+                _fontSize = (double)outParameters[3];
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void SetParameters()
+        {
+            _foreColor = Color.FromName(_foreColorStr);
+            _backgroundColor = Color.FromName(_backgroundColorStr);
+            lbHelloWord.Font = new Font(_fontFamily, (float)_fontSize);
+            lbHelloWord.BackColor = _backgroundColor;
+            lbHelloWord.ForeColor = _foreColor;
+            tbFont.Text = _fontFamily;
+            numUpDown.Value = Convert.ToDecimal(_fontSize);
+        }
+
+        private static bool IsInRegistry()
+        {
+            RegistryKey hklm = Registry.CurrentUser;
+            RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
+            var itStep = hkSoftware.CreateSubKey("ITStep");
+            if (itStep.GetValue("IsRegistry") != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void RegTestForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (rbSaveToXML.Checked == true)
+            {
+                RegistryKey hklm = Registry.CurrentUser;
                 RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
                 var itStep = hkSoftware.CreateSubKey("ITStep");
-                itStep.SetValue("IsRegistry", "1");
-                LibForRegistry.FontFamily = tbFont.Text;
-                LibForRegistry.FontSize = Convert.ToDouble(numUpDown.Value);
-                LibForRegistry.ForeColor = _foreColor.Name;
-                LibForRegistry.BackgroundColor = _backgroundColor.Name;
-                LibForRegistry.SaveToRegistry();
+                if (itStep.GetValue("IsRegistry") != null)
+                {
+                    itStep.DeleteValue("IsRegistry");//Сохраняем в файл, а не в реестр
+                }
+                SaveViaLib("LibraryToFile.dll", "LibraryToFile.LibForXML");
+            }
+            else
+            {
+                RegistryKey hklm = Registry.CurrentUser;
+                RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
+                var itStep = hkSoftware.CreateSubKey("ITStep");
+                itStep.SetValue("IsRegistry", "1");//Будем проверять при загрузке
+                SaveViaLib("Library.dll", "Library.LibForRegistry");
+            }
+        }
+
+        private void SaveViaLib(string assemblyName, string typeName)
+        {
+            try
+            {
+                Assembly asm = Assembly.LoadFrom(assemblyName);
+                Type lib = asm.GetType(typeName, true, true);
+                object instObj = Activator.CreateInstance(lib);
+                MethodInfo Save = instObj.GetType().GetMethod("Save");
+                object result = Save.Invoke(instObj, new object[] {
+                tbFont.Text, _foreColor.Name,
+                     _backgroundColor.Name, Convert.ToDouble(numUpDown.Value)});
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -67,7 +164,6 @@ namespace RegistryHW
 
         private void btBackgroundColor_Click(object sender, EventArgs e)
         {
-
             cdBackgroundColor.AllowFullOpen = false;
             cdBackgroundColor.ShowHelp = true;
             cdBackgroundColor.Color = lbHelloWord.ForeColor;
@@ -75,40 +171,6 @@ namespace RegistryHW
             {
                 lbHelloWord.ForeColor = cdBackgroundColor.Color;
                 _foreColor = cdBackgroundColor.Color;
-            }
-        }
-
-        private void RegTestForm_Load(object sender, EventArgs e)
-        {
-            RegistryKey hklm = Microsoft.Win32.Registry.CurrentUser;
-            RegistryKey hkSoftware = hklm.OpenSubKey("Software", true);
-            var itStep = hkSoftware.CreateSubKey("ITStep");
-            var inRegistry=itStep.GetValue("IsRegistry");
-            if (inRegistry!=null)
-            {
-
-                LibForRegistry.LoadFromRegistry();
-                lbHelloWord.Font = new Font(LibForRegistry.FontFamily, (float)LibForRegistry.FontSize);
-                lbHelloWord.BackColor = Color.FromName(LibForRegistry.BackgroundColor);
-                _backgroundColor = Color.FromName(LibForRegistry.BackgroundColor);
-                lbHelloWord.ForeColor = Color.FromName(LibForRegistry.ForeColor);
-                _foreColor = Color.FromName(LibForRegistry.ForeColor);
-                tbFont.Text = LibForRegistry.FontFamily;
-                numUpDown.Value = Convert.ToDecimal(LibForRegistry.FontSize);
-                rbSaveToRegistry.Checked = true;
-            }
-            else
-            {
-                LibForXML file = new LibForXML();
-                file.Load();
-                _foreColor = Color.FromName(file.ForeColor);
-                _backgroundColor = Color.FromName(file.BackgroundColor);
-                lbHelloWord.Font = new Font(file.FontFamily, (float)file.FontSize);
-                lbHelloWord.BackColor = Color.FromName(file.BackgroundColor);
-                lbHelloWord.ForeColor = Color.FromName(file.ForeColor);
-                tbFont.Text = file.FontFamily;
-                numUpDown.Value = Convert.ToDecimal(file.FontSize);
-                rbSaveToXML.Checked = true;
             }
         }
     }
